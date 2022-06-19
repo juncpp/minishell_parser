@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_lexer_checks.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmeredit <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/17 14:40:07 by mmeredit          #+#    #+#             */
+/*   Updated: 2022/06/17 14:40:08 by mmeredit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_pipes_next(t_token *tmp)
@@ -38,7 +50,7 @@ int	check_pipes(t_token **token)
 	return (check_pipes_next(tmp));
 }
 
-int check_redirects(t_token **token)
+int	check_redirects(t_token **token)
 {
 	t_token	*tmp;
 
@@ -91,9 +103,10 @@ int	all_check(t_info *info, char *p)
 		x = -1;
 	else if (!check_pipes(&info->token))
 		x = -2;
-	else if (!check_redirects(&info->token) || !check_new_lines(&info->token, p))
+	else if (!check_redirects(&info->token) || \
+		!check_new_lines(&info->token, p))
 		x = -3;
 	if (x != 0)
 		all_free(info, x, NULL);
-	return (0);
+	return (x);
 }

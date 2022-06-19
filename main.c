@@ -1,42 +1,73 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmeredit <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/17 14:39:19 by mmeredit          #+#    #+#             */
+/*   Updated: 2022/06/17 14:39:28 by mmeredit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 // Все команды исполняются в подпроцессах. Исключение - builtins
 
 void	print_command(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (str[i])
-		printf ("%s\n", str[i++]);
+	if (str)
+	{
+		while (str[i])
+			printf ("%s\n", str[i++]);
+	}
+}
+
+int	parser_next(t_command **command, t_info *info)
+{
+	t_command	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = *command;
+	while (tmp != NULL)
+	{
+		if (tmp->flag == 1)
+			opening_dollar(tmp, &i, info);
+		i = 0;
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 t_command	*pre_parser(t_info *info, char *p)
 {
-	t_token		*token;
 	t_command	*command;
 	int			i;
 
 	i = 0;
 	command = NULL;
-	token = info->token;
-	while (token != NULL)
-	{
-		run_str((token->token), p, &command, &i);
-		skip_field(&token, FIELD);
-		skip_field(&token, EXP_FIELD);
-		token = token->next;
-	}
+	while (p[i])
+		run_str(is_token(p[i]), p, &command, &i);
 	if (command != NULL)
 		parser_next(&command, info);
 	return (command);
 }
 
-char	*ft_readline(char *p)
+char	*ft_readline(char *p, t_info *info)
 {
 	p = readline("minishell$ ");
-	if (p && *p)
+	if (p)
 		add_history(p);
+	else
+	{
+		printf ("exit\n");
+		all_free(info, 1, NULL);
+		exit(EXIT_SUCCESS);
+	}
 	return (p);
 }
 
@@ -45,24 +76,32 @@ int	main(int ag, char **av, char **env)
 	t_info		info;
 	char		*p;
 	t_command	*command;
-	char 		**str;
+	char		**str;
 
-	(void)	av;
-	(void)	ag;
+	(void) av;
+	(void) ag;
 	p = NULL;
+	str = NULL;
+	command = NULL;
 	if (!init(&info, env))
 		return (write(2, "MEM NOT ALLOC!", 14));
+	signal_handlers();
 	while (!info.exit_f)
 	{
-		p = ft_readline(p);
-		lexer(&info, p);
-		command = pre_parser(&info, p);
-		str = parser(&command);
-		print_command(str);
-		ft_free_array(str);
-		all_free(&info, 2, &command);
-		free(p);
-		p = NULL;
+		p = ft_readline(p, &info);
+		if (p != NULL)
+		{
+			if (lexer(&info, p) == 0)
+			{
+				command = pre_parser(&info, p);
+				str = parser(&command);
+			}
+			print_command(str);
+			str = ft_free_array(str);
+			all_free(&info, 2, &command);
+			free(p);
+			p = NULL;
+		}
 	}
 	all_free(&info, 1, &command);
 	if (p != NULL)
@@ -85,3 +124,19 @@ int	main(int ag, char **av, char **env)
 //		printf ("%d\n", tmp->token);
 //	}
 //}
+
+// void	ft_check_print(t_command **command)
+// {
+// 	t_command	*tmp;
+
+// 	tmp = *command;
+// 	if (tmp != NULL)
+// 	{
+// 		while (tmp->next != NULL)
+// 		{
+// 			printf ("%s\n", tmp->str);
+// 			tmp = tmp->next;
+// 		}
+// 		printf ("%s\n", tmp->str);
+// 	}
+// }

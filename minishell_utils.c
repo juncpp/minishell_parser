@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmeredit <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/17 14:40:52 by mmeredit          #+#    #+#             */
+/*   Updated: 2022/06/17 14:40:53 by mmeredit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int 	count_status(int status)
+int	count_status(int status)
 {
 	int	k;
 
@@ -18,7 +30,7 @@ int 	count_status(int status)
 void	ft_itoa(char *dst, int status, int *j)
 {
 	char	x[10];
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (status != 0)

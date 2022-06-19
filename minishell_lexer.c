@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_lexer.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmeredit <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/17 14:39:59 by mmeredit          #+#    #+#             */
+/*   Updated: 2022/06/17 14:40:01 by mmeredit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	create_list_token(t_token **token, int data)
@@ -107,6 +119,5 @@ int	lexer(t_info *info, char *line)
 		}
 		i++;
 	}
-	all_check(info, line);
-	return (1);
+	return (all_check(info, line));
 }

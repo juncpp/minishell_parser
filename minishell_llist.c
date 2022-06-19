@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_llist.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmeredit <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/17 14:40:16 by mmeredit          #+#    #+#             */
+/*   Updated: 2022/06/17 14:40:18 by mmeredit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	mem_lists(t_list **envp_list, char *str)
@@ -99,7 +111,8 @@ void	print_error(t_info *info, int flag)
 		else if (flag == -2)
 			write (2, "minishell: Syntax error near unexpected token `|'\n", 51);
 		else if (flag == -3)
-			write (2, "syntax error near unexpected token `newline', `>' or `<'\n", 58);
+			write (2, \
+			"syntax error near unexpected token `newline', `>' or `<'\n", 58);
 		info->status = 258;
 		return ;
 	}

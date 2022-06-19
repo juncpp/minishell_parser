@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_free_with_str.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmeredit <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/17 14:39:43 by mmeredit          #+#    #+#             */
+/*   Updated: 2022/06/17 14:39:45 by mmeredit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	all_free(t_info *info, int flag, t_command **command)
 {
 	if (info->token != NULL)
 		free_token(&info->token);
-	if (command != NULL && *command != NULL) {
+	if (command != NULL && *command != NULL)
 		ft_free_command(command);
-	}
 	if (flag == 1)
 	{
 		ft_free_array(info->envp);
@@ -36,16 +47,19 @@ void	*ft_free_list(t_list **envp_list)
 	return (NULL);
 }
 
-void	**ft_free_array(char **envp)
+char	**ft_free_array(char **envp)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i] != NULL)
-		free(envp[i++]);
-	free(envp);
-	envp = NULL;
-	return (NULL);
+	if (envp && *envp)
+	{
+		while (envp[i] != NULL)
+			free(envp[i++]);
+		free(envp);
+		envp = NULL;
+	}
+	return (envp);
 }
 
 void	free_token(t_token **token)
