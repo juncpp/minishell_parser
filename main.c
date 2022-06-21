@@ -99,9 +99,9 @@ int	main(int ag, char **av, char **env)
 			print_command(str);
 			str = ft_free_array(str);
 			all_free(&info, 2, &command);
-			free(p);
-			p = NULL;
 		}
+		free(p);
+		p = NULL;
 	}
 	all_free(&info, 1, &command);
 	if (p != NULL)

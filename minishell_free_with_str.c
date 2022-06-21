@@ -52,7 +52,7 @@ char	**ft_free_array(char **envp)
 	int	i;
 
 	i = 0;
-	if (envp && *envp)
+	if (envp)
 	{
 		while (envp[i] != NULL)
 			free(envp[i++]);
